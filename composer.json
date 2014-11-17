@@ -1,0 +1,16 @@
+{
+    "name": "Numkil/Quackr-BackEnd",
+    "description": "Complete BackEnd for Quackr",
+    "require": {
+        "bramus/router": "dev-master",
+        "firebase/php-jwt": "dev-master",
+        "vlucas/phpdotenv": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Gontovnikas",
+            "email": "martin@gon.to"
+        }
+    ]
+}
