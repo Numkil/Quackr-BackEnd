@@ -22,6 +22,14 @@ GRANT ALL ON SEQUENCE questions_id_seq TO r0428453;
 GRANT ALL ON SEQUENCE categories_id_seq TO r0428905;
 GRANT ALL ON SEQUENCE categories_id_seq TO r0428453;
 
+--Maak de users tabel met volgende variabelen
+CREATE TABLE users (
+   id CHARACTER VARYING(45) NOT NULL,
+   accesslevel INTEGER NOT NULL,
+   score INTEGER NOT NULL,
+   PRIMARY KEY (username)
+);
+
 --CATEGORIES
 CREATE TABLE categories (
     id INTEGER NOT NULL default nextval('categories_id_seq'),
@@ -45,14 +53,24 @@ CREATE TABLE answers (
     correct BOOLEAN NOT NULL
 );
 
+--maak de answeredquestions tabel met volgende variabelen
+CREATE TABLE answeredquestions (
+   userlink CHARACTER VARYING(45) NOT NULL REFERENCES users(id)ON DELETE CASCADE,
+   questionlink INTEGER NOT NULL REFERENCES questions(id)ON DELETE CASCADE
+);
+
 --Provide rights on sequences to tables
 ALTER SEQUENCE categories_id_seq owned by categories.id;
 ALTER SEQUENCE questions_id_seq owned by questions.id;
 
 --Rights on tables for users
+GRANT ALL ON TABLE users TO r0428905;
+GRANT ALL ON TABLE users TO r0428453;
 GRANT ALL ON TABLE categories TO r0428905;
 GRANT ALL ON TABLE categories TO r0428453;
 GRANT ALL ON TABLE questions TO r0428905;
 GRANT ALL ON TABLE questions TO r0428453;
 GRANT ALL ON TABLE answers TO r0428905;
 GRANT ALL ON TABLE answers TO r0428453;
+GRANT ALL ON TABLE answeredquestions TO r0428905;
+GRANT ALL ON TABLE answeredquestions TO r0428453;
