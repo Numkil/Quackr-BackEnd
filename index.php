@@ -3,14 +3,17 @@
    //Make constants to save some typing work
    define('APPLICATION_PATH', 'application/');
    define('SYSTEM_PATH', 'system/');
+   $UserController;
 
    // Require composer autoloader
    require_once __DIR__ . '/vendor/autoload.php';
-   require_once APPLICATION_PATH.'config.php';
+   //require_once APPLICATION_PATH.'config.php';
    require_once SYSTEM_PATH.'model/DB.php';
    require_once SYSTEM_PATH.'model/Identifiable.php';
    require_once SYSTEM_PATH.'model/Mapper.php';
    require_once SYSTEM_PATH.'controller/Input.php';
+   require_once SYSTEM_PATH.'controller/Controller.php';
+   require_once APPLICATION_PATH.'controller/UserController.php';
 
    // In case one is using PHP 5.4's built-in server
    $filename = __DIR__ . preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
@@ -65,9 +68,12 @@
 
    // Check JWT on /secured routes
    $router->before('GET', '/secured/.*', function() {
+      global $ID;
+      global $UserController;
 
+      //BEFORE verification of loggin
       $requestHeaders = apache_request_headers();
-      $authorizationHeader = $requestHeaders['AUTHORIZATION'];
+      $authorizationHeader = $requestHeaders['Authorization'];
 
       if ($authorizationHeader == null) {
          header('HTTP/1.0 401 Unauthorized');
@@ -94,6 +100,10 @@
          exit();
       }
 
+
+      //AFTER verification of login
+      $UserController = new UserController($requestHeaders['ID']);
+      $UserController->register();
    });
 
    $router->get('/ping', function() {
@@ -102,6 +112,10 @@
 
    $router->get('/secured/ping', function() {
       echo "All good. You only get this message if you're authenticated";
+   });
+
+   $router->get('/secured/categories', function() {
+      //TODO First functionality
    });
 
    $router->set404(function() {
