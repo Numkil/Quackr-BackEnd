@@ -47,10 +47,9 @@
       Perform authorization check for this particular user
       */
       public function checkAuthorization($requiredAccessLevel){
-
+         $tempuser = $this->_usermapper->get($this->_id, 'id');
+         return $this->_hasRequiredAccesLevel($requiredAccessLevel);
       }
 
    }
-
-
 ?>

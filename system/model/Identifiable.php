@@ -1,6 +1,6 @@
 <?php
 
-   class Identifiable {
+   abstract class Identifiable implements JsonSerializable {
       private $_id;
 
       public function getId()
@@ -30,6 +30,12 @@
          if (method_exists($this, $method)) {
             $this->$method($value);
          }
+      }
+
+      abstract public function toArray();
+
+      public function jsonSerialize(){
+         return $this->toArray();
       }
 
    }

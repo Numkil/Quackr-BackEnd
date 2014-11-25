@@ -18,6 +18,8 @@
          }else{
             header('HTTP/1.0 401 Unauthorized');
             echo "User has not enough rights for this function";
+            //Discuss: hard exit here because we know already you are not allowed?
+            return false;
          }
       }
    }

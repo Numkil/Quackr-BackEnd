@@ -14,6 +14,7 @@
    require_once SYSTEM_PATH.'controller/Input.php';
    require_once SYSTEM_PATH.'controller/Controller.php';
    require_once APPLICATION_PATH.'controller/UserController.php';
+   require_once APPLICATION_PATH.'controller/QuestionController.php';
 
    // In case one is using PHP 5.4's built-in server
    $filename = __DIR__ . preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
@@ -71,7 +72,7 @@
       global $ID;
       global $UserController;
 
-      //BEFORE verification of loggin
+      //BEFORE verification of login
       $requestHeaders = apache_request_headers();
       $authorizationHeader = $requestHeaders['Authorization'];
 
@@ -106,16 +107,19 @@
       $UserController->register();
    });
 
+   //Testing purposes only
    $router->get('/ping', function() {
       echo "All good. You don't need to be authenticated to call this";
    });
 
+   //Testing purposes only
    $router->get('/secured/ping', function() {
       echo "All good. You only get this message if you're authenticated";
    });
 
-   $router->get('/secured/categories', function() {
-      //TODO First functionality
+   //TODO Secured function -> only unsecured for testing
+   $router->get('/categories', function() {
+      $questioncontroller = new QuestionController();
    });
 
    $router->set404(function() {

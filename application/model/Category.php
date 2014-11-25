@@ -1,6 +1,6 @@
 <?php
    //Category.php
-   class Category extends Identifiable{
+   class Category extends Identifiable {
       private $_categoryname;
 
       public function setCategoryName($argument)
@@ -16,6 +16,7 @@
          $fields['categoryname'] = $this->getCategoryName();
          return $fields;
       }
+
    }
 
 ?>
