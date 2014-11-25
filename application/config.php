@@ -5,15 +5,14 @@
 
    global $db_config;
    $db_config = array(
-      'driver' => 'pgsql',
+      'driver' => 'mysql',
       'username' => $username,
       'password' => $password,
       'schema' => 'quackr_r0428905',
       'dsn' => array(
-         'host' => 'gegevensbanken.khleuven.be',
-         //TODO -> vind database met voldoende rechten
-         'dbname' => 'PROBEEr',
-         'port' => '51415',
+         'host' => 'localhost',
+         'dbname' => 'c7185zrc_quackr',
+         'port' => '3306',
       )
    );
 ?>
