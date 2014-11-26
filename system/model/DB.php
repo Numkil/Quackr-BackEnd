@@ -57,7 +57,8 @@
       public function queryOne($sql, $type, $arguments = array())
       {
          $stmt = $this->execute($sql, $arguments);
-         return $stmt->fetchObject($type);
+         //TODO FIGURE OUT HOW I can get the inserted row back
+         $stmt->fetchObject($type);
       }
 
       //Change the way it returns the given data;

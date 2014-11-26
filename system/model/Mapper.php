@@ -48,7 +48,7 @@
          $values = $object->toArray();
          $fieldNames = array_keys($values);
          $queryArguments = $this->createQueryArguments($values);
-         $query = "INSERT INTO $this->_table (" . implode(', ', $fieldNames) . ") VALUES (:" . implode(', :', $fieldNames) . ") returning *";
+         $query = "INSERT INTO $this->_table (" . implode(', ', $fieldNames) . ") VALUES (:" . implode(', :', $fieldNames) . ")";
          $result = $this->_db->queryOne($query, $this->_type, $queryArguments);
          return $result;
       }

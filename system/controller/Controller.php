@@ -5,11 +5,11 @@
    */
    class Controller
    {
-      private $_sanitizer;
+      protected $_sanitizer;
 
       public function __construct()
       {
-         $_sanitizer = new Input();
+         $this->_sanitizer = new Input();
       }
 
       protected function _hasRequiredAccesLevel($user, $requiredAccessLevel){

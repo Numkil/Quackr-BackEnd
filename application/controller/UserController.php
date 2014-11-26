@@ -35,9 +35,9 @@
       */
       public function register(){
          $user = new User();
-         if($id && !$this->exists($id)){
+         if($this->_id && !$this->exists()){
             $user->setID($this->_id);
-            $this->_usermapper->add($user);
+            echo($this->_usermapper->add($user));
             return true;
          }
          return false;
