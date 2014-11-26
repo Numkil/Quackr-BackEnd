@@ -117,7 +117,7 @@
    });
 
    //TODO Secured function -> only unsecured for testing
-   $router->get('/categories', function() {
+   $router->get('/secured/categories', function() {
       $questioncontroller = new QuestionController();
       $questioncontroller->getAllCategories();
    });

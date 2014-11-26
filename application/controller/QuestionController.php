@@ -23,9 +23,13 @@
 
       public function getAllCategories(){
          $categories = $this->_categorymapper->getAll();
+         $i = 0;
+         $container;
          foreach ($categories as $category){
-            echo($category->jsonSerialize());
+            $container[$i] = $category->toArray();
+            $i++;
          }
+         echo(json_encode($container));
       }
    }
 ?>

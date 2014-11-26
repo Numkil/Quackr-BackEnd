@@ -34,6 +34,8 @@
 
       abstract public function toArray();
 
+      //Return jsonrepresentation of this identifiable
+      //Will be useful after php upgrade
       public function jsonSerialize(){
          return json_encode($this->toArray());
       }
