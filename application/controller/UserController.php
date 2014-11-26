@@ -37,7 +37,7 @@
          $user = new User();
          if($this->_id && !$this->exists()){
             $user->setID($this->_id);
-            echo($this->_usermapper->add($user));
+            $this->_usermapper->add($user);
             return true;
          }
          return false;

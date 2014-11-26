@@ -57,8 +57,13 @@
       public function queryOne($sql, $type, $arguments = array())
       {
          $stmt = $this->execute($sql, $arguments);
-         //TODO FIGURE OUT HOW I can get the inserted row back
-         $stmt->fetchObject($type);
+         return $stmt->fetchObject($type);
+      }
+
+      public function add($sql, $arguments = array())
+      {
+         $stmt = $this->execute($sql, $arguments);
+         return $this->_db->lastInsertId();
       }
 
       //Change the way it returns the given data;

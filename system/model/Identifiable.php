@@ -1,7 +1,7 @@
 <?php
 
    abstract class Identifiable{
-      private $_id;
+      protected $_id;
 
       public function getId()
       {

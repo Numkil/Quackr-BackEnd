@@ -1,7 +1,6 @@
 <?php
    //User.php -- this user class will be used to store a name, _email and password of a user
    class User extends Identifiable{
-      private $_id;
       private $_score;
       private $_accesslevel;
 
@@ -9,10 +8,6 @@
          }
 
          //SETTERS
-         public function setID($id){
-            $this->_id = $id;
-         }
-
          public function setScore($score){
             $this->_score = $score;
          }
@@ -28,10 +23,6 @@
             }else{
                return 1;
             }
-         }
-
-         public function getID() {
-            return $this->_id;
          }
 
          public function getScore() {

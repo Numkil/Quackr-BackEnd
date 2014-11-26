@@ -49,8 +49,11 @@
          $fieldNames = array_keys($values);
          $queryArguments = $this->createQueryArguments($values);
          $query = "INSERT INTO $this->_table (" . implode(', ', $fieldNames) . ") VALUES (:" . implode(', :', $fieldNames) . ")";
-         $result = $this->_db->queryOne($query, $this->_type, $queryArguments);
-         return $result;
+         $result = $this->_db->add($query, $queryArguments);
+         if($result){
+            $object->setID($result);
+         }
+         return $object;
       }
 
       public function update($object, $where = array())
