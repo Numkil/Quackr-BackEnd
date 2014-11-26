@@ -13,7 +13,7 @@
       private $_answermapper;
       private $_categorymapper;
 
-      public function __construct($id)
+      public function __construct()
       {
          parent::__construct();
          $this->_questionmapper = new Question_Mapper();
@@ -23,7 +23,9 @@
 
       public function getAllCategories(){
          $categories = $this->_categorymapper->getAll();
-         echo(json_encode($output));
+         foreach ($categories as $category){
+            echo($category->jsonSerialize());
+         }
       }
    }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-   abstract class Identifiable implements JsonSerializable {
+   abstract class Identifiable{
       private $_id;
 
       public function getId()
@@ -35,7 +35,6 @@
       abstract public function toArray();
 
       public function jsonSerialize(){
-         return $this->toArray();
+         return json_encode($this->toArray());
       }
-
    }

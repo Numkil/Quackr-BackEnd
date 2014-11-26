@@ -1,0 +1,40 @@
+/*Maak de users tabel met volgende variabelen*/
+CREATE TABLE IF NOT EXISTS users (
+   username VARCHAR(45) NOT NULL,
+   accesslevel INT NOT NULL,
+   score INT NOT NULL,
+   PRIMARY KEY (username)
+);
+
+
+/*CATEGORIES*/
+CREATE TABLE IF NOT EXISTS categories (
+    id INT(8) AUTO_INCREMENT,
+    categoryname VARCHAR(45) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);
+
+
+/*QUESTIONS*/
+CREATE TABLE IF NOT EXISTS questions (
+    id INT(8) AUTO_INCREMENT,
+    question VARCHAR(100) NOT NULL,
+    lvl INT NOT NULL,
+    categoryid INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+    PRIMARY KEY (id)
+);
+
+
+/*ANSWERS*/
+CREATE TABLE IF NOT EXISTS answers (
+    questionlink INT NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
+    propanswer VARCHAR(100) NOT NULL,
+    correct BOOLEAN NOT NULL
+);
+
+
+/*maak de answeredquestions tabel met volgende variabelen*/
+CREATE TABLE IF NOT EXISTS answeredquestions (
+   userlink VARCHAR(45) NOT NULL REFERENCES users(id)ON DELETE CASCADE,
+   questionlink INT NOT NULL REFERENCES questions(id)ON DELETE CASCADE
+);

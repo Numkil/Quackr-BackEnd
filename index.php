@@ -1,5 +1,4 @@
 <?php
-
    //Make constants to save some typing work
    define('APPLICATION_PATH', 'application/');
    define('SYSTEM_PATH', 'system/');
@@ -7,7 +6,7 @@
 
    // Require composer autoloader
    require_once __DIR__ . '/vendor/autoload.php';
-   //require_once APPLICATION_PATH.'config.php';
+   require_once '.db_password.php';
    require_once SYSTEM_PATH.'model/DB.php';
    require_once SYSTEM_PATH.'model/Identifiable.php';
    require_once SYSTEM_PATH.'model/Mapper.php';
@@ -15,6 +14,7 @@
    require_once SYSTEM_PATH.'controller/Controller.php';
    require_once APPLICATION_PATH.'controller/UserController.php';
    require_once APPLICATION_PATH.'controller/QuestionController.php';
+   require_once APPLICATION_PATH.'config.php';
 
    // In case one is using PHP 5.4's built-in server
    $filename = __DIR__ . preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
@@ -101,7 +101,6 @@
          exit();
       }
 
-
       //AFTER verification of login
       $UserController = new UserController($requestHeaders['ID']);
       $UserController->register();
@@ -120,6 +119,7 @@
    //TODO Secured function -> only unsecured for testing
    $router->get('/categories', function() {
       $questioncontroller = new QuestionController();
+      $questioncontroller->getAllCategories();
    });
 
    $router->set404(function() {
