@@ -37,14 +37,14 @@
       Every available record's proposal value will be added to the list of possibilities n*/
       public function setPossibilities($possibilities = array()) {
          foreach($possibilities as $value) {
-            if ($value->getCorrect() == true) {
+            if ($value->getCorrect() == 1) {
                $this->setAnswer($value->getPropanswer());
             }
          }
          $this->_possibilities = $possibilities;
       }
 
-      public function setLevel($lvl) {
+      public function setLvl($lvl) {
          $this->_level = $lvl;
       }
 
@@ -65,7 +65,7 @@
          return $this->_possibilities;
       }
 
-      public function getLevel() {
+      public function getLvl() {
          return $this->_level;
       }
 
@@ -79,8 +79,22 @@
 
       public function toArray() {
          $fields['question'] = $this->getQuestion();
-         $fields['lvl'] = $this->getLevel();
+         $fields['lvl'] = $this->getLvl();
          $fields['categoryid'] = $this->getCategoryId();
+         return $fields;
+      }
+
+      public function toRecursiveArray(){
+         $fields['question'] = $this->getQuestion();
+         $fields['lvl'] = $this->getLvl();
+         $fields['categoryid'] = $this->getCategoryId();
+         $propanswers = array();
+         $i = 0;
+         foreach ($this->getPossibilities() as $propanswer){
+            $propanswers[$i] = $propanswer->toArray();
+            $i++;
+         }
+         $fields['propanswers'] = $propanswers;
          return $fields;
       }
    }

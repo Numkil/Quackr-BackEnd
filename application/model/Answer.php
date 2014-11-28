@@ -3,6 +3,7 @@
    class Answer extends Identifiable{
       private $_propanswer;
       private $_correct;
+      private $_questionlink;
 
       public function __construct() {
          // body...
@@ -10,6 +11,10 @@
 
       public function setPropanswer($argument) {
          $this->_propanswer = $argument;
+      }
+
+      public function setQuestionlink($argument){
+         $this->_questionlink = $argument;
       }
 
       public function setCorrect($argument) {
@@ -20,16 +25,20 @@
          return $this->_propanswer;
       }
 
+      public function getQuestionlink(){
+         return $this->_questionlink;
+      }
+
       public function getCorrect() {
          if($this->_correct){
-            return true;
+            return 1;
          }else{
             return 0;
          }
       }
 
       public function toArray(){
-         $fields['Questionlink'] = $this->getId();
+         $fields['questionlink'] = $this->getQuestionlink();
          $fields['propanswer'] = $this->getPropAnswer();
          $fields['correct'] = $this->getCorrect();
          return $fields;

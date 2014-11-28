@@ -46,8 +46,10 @@
          }
 
          public function add($object){
-            $question = parent::add($object);
-            $object->setId($question->getId());
+            $id = parent::add($object);
+            if($id){
+               $object->setId($id);
+            }
             foreach($object->getPossibilities() as $value){
                $this->_answermapper->add($value);
             }
@@ -69,5 +71,13 @@
             }
          }
 
+         public function getAllFromCategory($argument) {
+            $questions = parent::getAllWithArgument($argument, 'categoryid');
+            foreach ($questions as $question){
+               $answers = $this->_answermapper->getAllWithArgument($question->getID(), 'questionlink');
+               $question->setPossibilities($answers);
+            }
+            return $questions;
+         }
       }
    ?>

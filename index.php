@@ -107,21 +107,28 @@
    });
 
    //Testing purposes only
-   $router->get('/ping', function() {
+   $router->match('GET¡POST', '/ping', function() {
       echo "All good. You don't need to be authenticated to call this";
    });
 
    //Testing purposes only
-   $router->get('/secured/ping', function() {
+   $router->match('GET¡POST', '/secured/ping', function() {
       echo "All good. You only get this message if you're authenticated";
    });
 
-   //TODO Secured function -> only unsecured for testing
+   //RETURNS all Categories
    $router->get('/secured/categories', function() {
       $questioncontroller = new QuestionController();
       $questioncontroller->getAllCategories();
    });
 
+   //RETURNS Questions from category
+   $router->get('/secured/category/(\d+)', function($categoryid){
+      $questioncontroller = new QuestionController();
+      $questioncontroller->getQuestionsFromCategory($categoryid);
+   });
+
+   //None of the above categories matched
    $router->set404(function() {
       header('HTTP/1.1 404 Not Found');
       echo "Page not found";

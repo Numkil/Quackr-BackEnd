@@ -31,5 +31,16 @@
          }
          echo(json_encode($container));
       }
+
+      public function getQuestionsFromCategory($categoryid){
+         $questions = $this->_questionmapper->getAllFromCategory($categoryid);
+         $i = 0;
+         $container;
+         foreach ($questions as $question){
+            $container[$i] = $question->toRecursiveArray();
+            $i++;
+         }
+         echo(json_encode($container));
+      }
    }
 ?>
