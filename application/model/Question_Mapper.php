@@ -23,19 +23,21 @@
          $this->_answermapper = new Answer_Mapper();
       }
 
-      private function getRandom($id){
+      private function getRandom($id, $categoryid){
          $query = "
-         select *from questions where id not in(
+         select *from questions inner join categories on categories.id = categoryid
+            where questions.id not in(
             SELECT questions.id
             from answeredquestions inner join questions on id = questionlink where userlink = ?)
-            order by random() limit 1
+            AND categories.id = ?
+            order by rand() limit 1
             ";
-            return $this->_db->queryOne($query, $this->_type, array($id));
+            return $this->_db->queryOne($query, $this->_type, array($id, $categoryid));
          }
 
-         public function getRandomQuestion($id){
+         public function getRandomQuestion($id, $categoryid){
             //get the corresponding Question from DB
-            $question = $this->getRandom($id);
+            $question = $this->getRandom($id, $categoryid);
             //get the corresponding answers
             if($question == null){
                return false;

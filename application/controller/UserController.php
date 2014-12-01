@@ -51,5 +51,9 @@
          return $this->_hasRequiredAccesLevel($requiredAccessLevel);
       }
 
+      public function getId(){
+         return $this->_id;
+      }
+
    }
 ?>

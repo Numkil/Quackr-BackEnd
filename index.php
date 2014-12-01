@@ -128,6 +128,19 @@
       $questioncontroller->getQuestionsFromCategory($categoryid);
    });
 
+   //RETURNS random question which has not been answered by the user
+   $router->get('/secured/category/(\d+)/random', function($categoryid){
+      $questioncontroller = new QuestionController();
+      global $UserController;
+      $questioncontroller->getRandom($categoryid, $UserController->getId());
+   });
+
+   //RETURNS 1 specific question
+   $router->get('/secured/question/(\d+)', function($questionid){
+      $questioncontroller = new QuestionController();
+      $questioncontroller->getQuestion($questionid);
+   });
+
    //None of the above categories matched
    $router->set404(function() {
       header('HTTP/1.1 404 Not Found');
