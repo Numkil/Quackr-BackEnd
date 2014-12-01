@@ -26,7 +26,7 @@
          $i = 0;
          $container = array();
          foreach ($categories as $category){
-            $container[$i] = $category->toRecursiveArray();
+            $container[$i] = $category->jsonSerialize();
             $i++;
          }
          echo(json_encode($container));
@@ -38,22 +38,22 @@
          $i = 0;
          $container = array();
          foreach ($questions as $question){
-            $container[$i] = $question->toRecursiveArray();
+            $container[$i] = $question->jsonSerialize();
             $i++;
          }
          $category->questioncontainer = $container;
-         echo(json_encode($category->toRecursiveArray()));
+         echo(json_encode($category->jsonSerialize()));
       }
 
       public function getQuestion($questionid){
          $question = $this->_questionmapper->get($questionid);
-         echo(json_encode($question->toRecursiveArray()));
+         echo(json_encode($question->jsonSerialize()));
       }
 
 
       public function getRandom($categoryid, $userid){
          $question = $this->_questionmapper->getRandomQuestion($userid, $categoryid);
-         echo(json_encode($question->toRecursiveArray()));
+         echo(json_encode($question->jsonSerialize()));
       }
    }
 ?>

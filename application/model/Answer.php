@@ -38,10 +38,13 @@
       }
 
       public function toArray(){
-         $fields['questionlink'] = $this->getQuestionlink();
          $fields['propanswer'] = $this->getPropAnswer();
          $fields['correct'] = $this->getCorrect();
          return $fields;
+      }
+
+      public function jsonSerialize(){
+         return $this->toArray();
       }
 
    }

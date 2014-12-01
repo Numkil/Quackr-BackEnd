@@ -84,14 +84,13 @@
          return $fields;
       }
 
-      public function toRecursiveArray(){
+      public function jsonSerialize(){
          $fields['question'] = $this->getQuestion();
          $fields['lvl'] = $this->getLvl();
-         $fields['categoryid'] = $this->getCategoryId();
          $propanswers = array();
          $i = 0;
          foreach ($this->getPossibilities() as $propanswer){
-            $propanswers[$i] = $propanswer->toArray();
+            $propanswers[$i] = $propanswer->jsonSerialize();
             $i++;
          }
          $fields['propanswers'] = $propanswers;

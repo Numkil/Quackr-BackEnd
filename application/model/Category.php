@@ -19,9 +19,9 @@
          return $fields;
       }
 
-      public function toRecursiveArray(){
+      public function jsonSerialize(){
+         $fields['id'] = $this->getId();
          $fields['categoryname'] = $this->getCategoryName();
-         $fields['id'] = $this->getID();
          $fields['questions'] = $this->questioncontainer;
          return $fields;
       }

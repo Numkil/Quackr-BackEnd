@@ -44,5 +44,9 @@
             $fields['score'] = $this->getScore();
             return $fields;
          }
+
+         public function jsonSerialize(){
+            return $this->toArray();
+         }
       }
    ?>

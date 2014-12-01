@@ -32,11 +32,6 @@
          }
       }
 
-      abstract public function toArray();
-
-      //Return jsonrepresentation of this identifiable
-      //Will be useful after php upgrade
-      public function jsonSerialize(){
-         return json_encode($this->toArray());
-      }
-   }
+      abstract public function toArray(); //Represent object how database wants it
+      abstract public function jsonSerialize(); //Represent object how JSON wants it
+}

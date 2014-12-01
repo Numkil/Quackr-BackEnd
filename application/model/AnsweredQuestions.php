@@ -28,5 +28,9 @@
          $fields['Questionlink'] = $this->getQuestionlink();
          return $fields;
       }
+
+      public function jsonSerialize(){
+         return $this->toArray();
+      }
    }
 ?>
