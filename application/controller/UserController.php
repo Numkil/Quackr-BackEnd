@@ -55,5 +55,10 @@
          return $this->_id;
       }
 
+      public function getCurrentUser(){
+         $tempuser = $this->_usermapper->get($this->_id, 'id');
+         echo(json_encode($tempuser->jsonSerialize()));
+      }
+
    }
 ?>

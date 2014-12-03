@@ -135,10 +135,24 @@
       $questioncontroller->getRandom($categoryid, $UserController->getId());
    });
 
+   //RETURNS several random questions as specified in url, less if there aren't enough unanswered
+   //questions by the user
+   $router->get('/secured/category/(\d+)/random/(\d+)/', function($categoryid, $amount){
+      $questioncontroller = new QuestionController();
+      global $UserController;
+      $questioncontroller->getMultipleRandoms($categoryid, $UserController->getId(), $amount);
+   });
+
    //RETURNS 1 specific question
    $router->get('/secured/question/(\d+)', function($questionid){
       $questioncontroller = new QuestionController();
       $questioncontroller->getQuestion($questionid);
+   });
+
+   //RETURN information about the current user
+   $router->get('/secured/user/info', function($questionid){
+      global $UserController;
+      $UserController->getCurrentUser();
    });
 
    //None of the above categories matched
