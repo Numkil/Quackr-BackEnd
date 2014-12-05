@@ -85,8 +85,10 @@
       }
 
       public function jsonSerialize(){
+         $fields['id'] = $this->getId();
          $fields['question'] = $this->getQuestion();
          $fields['lvl'] = $this->getLvl();
+         $fields['correctanswer'] = $this->getAnswer()->jsonSerialize();
          $propanswers = array();
          $i = 0;
          foreach ($this->getPossibilities() as $propanswer){
