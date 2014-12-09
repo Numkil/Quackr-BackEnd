@@ -155,6 +155,20 @@
       $UserController->getCurrentUser();
    });
 
+   //RETURN sizeansweredquestions / sizetotalamountquestions
+   $router->get('/secured/user/answered', function(){
+      global $UserController;
+      $questioncontroller = new QuestionController();
+      $questioncontroller->getSizeAnswered($UserController->getId());
+   });
+
+   //RETURN sizeansweredquestions / sizeamountquestionsfromcategory
+   $router->get('/secured/user/(\d+)/progress/', function($categoryid){
+      $questioncontroller = new QuestionController();
+      global $UserController;
+      $questioncontroller->getSizeAnsweredFromCategory($UserController->getId(), $categoryid);
+   });
+
    //None of the above categories matched
    $router->set404(function() {
       header('HTTP/1.1 404 Not Found');
