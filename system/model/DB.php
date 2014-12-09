@@ -69,7 +69,7 @@
       //Change the way it returns the given data;
       public function primitiveQuery($sql, $arguments = array()) {
          $stmt = $this->execute($sql, $arguments);
-         return $stmt->fetch(PDO::FETCH_LAZY);
+         return $stmt->fetchColumn();
       }
    }
 

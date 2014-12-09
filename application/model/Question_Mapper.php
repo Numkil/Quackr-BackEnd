@@ -23,10 +23,23 @@
          $this->_answermapper = new Answer_Mapper();
       }
 
+      public function size($categoryid = null){
+         if($categoryid){
+            $query = "
+            SELECT count(*)
+            FROM $this->_table
+            where categoryid = ?
+            ";
+            return $this->_db->primitiveQuery($query, $categoryid);
+         }else{
+            return parent::size();
+         }
+      }
+
       private function getRandom($id, $categoryid){
          $query = "
          select *from questions inner join categories on categories.id = categoryid
-            where questions.id not in(
+         where questions.id not in(
             SELECT questions.id
             from answeredquestions inner join questions on id = questionlink where userlink = ?)
             AND categories.id = ?
@@ -47,39 +60,63 @@
             return $question;
          }
 
-         public function add($object){
-            $id = parent::add($object);
-            if($id){
-               $object->setId($id);
+         private function getRandoms($id, $categoryid, $amount){
+            $query = "
+            select *from questions inner join categories on categories.id = categoryid
+            where questions.id not in(
+               SELECT questions.id
+               from answeredquestions inner join questions on id = questionlink where userlink = ?)
+               AND categories.id = ?
+               order by rand() limit ?
+               ";
+               return $this->_db->queryAll($query, $this->_type, array($id, $categoryid, $amount));
             }
-            foreach($object->getPossibilities() as $value){
-               $this->_answermapper->add($value);
+
+            public function getRandomQuestions($id, $categoryid, $amount){
+               $questions = $this->getRandoms($id, $categoryid, $amount);
+               if($questions == null){
+                  return false;
+               }
+               foreach ($questions as $question){
+                  $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
+                  $question->setPossibilities($answers);
+               }
+               return $questions;
             }
-         }
 
-         public function get($id, $idname = 'id'){
-            $question = parent::get($id, $idname);
-            $answers = $this->_answermapper->getAllWithArgument($id, 'questionlink');
-            $question->setPossibilities($answers);
-            return $question;
-         }
-
-         public function updateQuestion($object){
-            parent::update($object);
-            $fields['questionlink'] = $object->getId();
-            $this->_answermapper->delete($fields);
-            foreach($object->getPossibilities() as $value){
-               $this->_answermapper->add($value);
+            public function add($object){
+               $id = parent::add($object);
+               if($id){
+                  $object->setId($id);
+               }
+               foreach($object->getPossibilities() as $value){
+                  $this->_answermapper->add($value);
+               }
             }
-         }
 
-         public function getAllFromCategory($argument) {
-            $questions = parent::getAllWithArgument($argument, 'categoryid');
-            foreach ($questions as $question){
-               $answers = $this->_answermapper->getAllWithArgument($question->getID(), 'questionlink');
+            public function get($id, $idname = 'id'){
+               $question = parent::get($id, $idname);
+               $answers = $this->_answermapper->getAllWithArgument($id, 'questionlink');
                $question->setPossibilities($answers);
+               return $question;
             }
-            return $questions;
+
+            public function updateQuestion($object){
+               parent::update($object);
+               $fields['questionlink'] = $object->getId();
+               $this->_answermapper->delete($fields);
+               foreach($object->getPossibilities() as $value){
+                  $this->_answermapper->add($value);
+               }
+            }
+
+            public function getAllFromCategory($argument) {
+               $questions = parent::getAllWithArgument($argument, 'categoryid');
+               foreach ($questions as $question){
+                  $answers = $this->_answermapper->getAllWithArgument($question->getID(), 'questionlink');
+                  $question->setPossibilities($answers);
+               }
+               return $questions;
+            }
          }
-      }
-   ?>
+      ?>
