@@ -38,6 +38,7 @@
       }
 
       public function toArray(){
+         $fields['id'] = $this->getId();
          $fields['propanswer'] = $this->getPropAnswer();
          $fields['correct'] = $this->getCorrect();
          return $fields;
