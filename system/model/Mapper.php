@@ -25,6 +25,14 @@
          return $this->_db->queryOne($query, $this->_type, array($id));
       }
 
+      public function size(){
+         $query = "
+         SELECT count(*)
+         FROM $this->_table
+         ";
+         return $this->_db->primitiveQuery($query);
+      }
+
       public function getAllWithArgument($argument, $argumentname) {
          $query = "
          SELECT *
