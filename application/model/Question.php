@@ -2,7 +2,7 @@
    //Question.php -- Question's that can be answered on the site.
    class Question extends Identifiable{
       private $_question;
-      private $_answer;
+      private $_answers;
       private $_possibilities;
       private $_level;
       private $_categoryid;
@@ -28,19 +28,21 @@
          $this->_categoryid = $id;
       }
 
-      public function setAnswer($answer) {
-         $this->_answer = $answer;
+      public function setAnswers($answer = array()) {
+         $this->_answers = $answer;
       }
 
       /*The record where the "correct" value is true is the right answer.
       this record will be passed to setAnswer
       Every available record's proposal value will be added to the list of possibilities n*/
       public function setPossibilities($possibilities = array()) {
+         $correctanswers = array();
          foreach($possibilities as $value) {
             if ($value->getCorrect() == 1) {
-               $this->setAnswer($value->getPropanswer());
+               array_push($correctanswers, $value);
             }
          }
+         $this->setAnswers($correctanswers);
          $this->_possibilities = $possibilities;
       }
 
@@ -53,8 +55,8 @@
          return $this->_question;
       }
 
-      public function getAnswer() {
-         return $this->_answer;
+      public function getAnswers() {
+         return $this->_answers;
       }
 
       public function getCategoryId() {
@@ -88,7 +90,13 @@
          $fields['id'] = $this->getId();
          $fields['question'] = $this->getQuestion();
          $fields['lvl'] = $this->getLvl();
-         $fields['correctanswer'] = $this->getAnswer()->jsonSerialize();
+         $correctanswers = array();
+         $i = 0;
+         foreach ($this->getAnswers() as $answer){
+            $correctanswers[$i] = $answer->jsonSerialize();
+            $i++;
+         }
+         $fields['correctanswer'] = $correctanswers;
          $propanswers = array();
          $i = 0;
          foreach ($this->getPossibilities() as $propanswer){
