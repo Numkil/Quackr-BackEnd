@@ -38,7 +38,7 @@
 
       private function getRandom($id, $categoryid){
          $query = "
-         select *from questions inner join categories on categories.id = categoryid
+         select questions.* from questions inner join categories on categories.id = categoryid
          where questions.id not in(
             SELECT questions.id
             from answeredquestions inner join questions on id = questionlink where userlink = ?)
@@ -53,7 +53,7 @@
             $question = $this->getRandom($id, $categoryid);
             //get the corresponding answers
             if($question == null){
-               return false;
+               return $question;
             }
             $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
             $question->setPossibilities($answers);
@@ -62,20 +62,20 @@
 
          private function getRandoms($id, $categoryid, $amount){
             $query = "
-            select *from questions inner join categories on categories.id = categoryid
+            select questions.* from questions inner join categories on categories.id = categoryid
             where questions.id not in(
-               SELECT questions.id
-               from answeredquestions inner join questions on id = questionlink where userlink = ?)
-               AND categories.id = ?
-               order by rand() limit ?
+            SELECT questions.id
+            from answeredquestions inner join questions on id = questionlink where userlink = ?)
+            AND categories.id = ?
+            order by rand() limit $amount
                ";
-               return $this->_db->queryAll($query, $this->_type, array($id, $categoryid, $amount));
+               return $this->_db->queryAll($query, $this->_type, array($id,$categoryid));
             }
 
             public function getRandomQuestions($id, $categoryid, $amount){
                $questions = $this->getRandoms($id, $categoryid, $amount);
                if($questions == null){
-                  return false;
+                  return array();
                }
                foreach ($questions as $question){
                   $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
