@@ -1,6 +1,12 @@
 <?php
    /*Answer_Mapper.php -- Implements the specific code for adding/retrieving a question from DB
    Uses DB.php->execute method for server contact
+   answers table layout for future reference
+   +-------------------------------------------------+
+   | questionlink |    userlink    | correctAnswered |
+   +-------------------------------------------------+
+   |       1      |  google|25452  |         t       |
+   +-------------------------------------------------+
    */
 
    require_once APPLICATION_PATH.'model/AnsweredQuestions.php';

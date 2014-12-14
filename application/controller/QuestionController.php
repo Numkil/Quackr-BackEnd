@@ -36,6 +36,7 @@
       }
 
       public function getQuestionsFromCategory($categoryid){
+         $categoryid = $this->_sanitizer->sanitize($categoryid);
          $category = $this->_categorymapper->get($categoryid, 'id');
          $questions = $this->_questionmapper->getAllFromCategory($categoryid);
          $i = 0;
@@ -49,12 +50,14 @@
       }
 
       public function getQuestion($questionid){
+         $questionid = $this->_sanitizer->sanitize($questionid);
          $question = $this->_questionmapper->get($questionid);
          echo(json_encode($question->jsonSerialize()));
       }
 
 
       public function getRandom($categoryid, $userid){
+         $categoryid = $this->_sanitizer->sanitize($categoryid);
          $category = $this->_categorymapper->get($categoryid, 'id');
          $question = $this->_questionmapper->getRandomQuestion($userid, $categoryid);
          $category->questioncontainer = $question->jsonSerialize();
@@ -62,6 +65,8 @@
       }
 
       public function getMultipleRandoms($categoryid, $userid, $amount){
+         $categoryid = $this->_sanitizer->sanitize($categoryid);
+         $amount = $this->_sanitizer->sanitize($amount);
          $category = $this->_categorymapper->get($categoryid, 'id');
          $questions = $this->_questionmapper->getRandomQuestions($userid, $categoryid, $amount);
          $i = 0;
@@ -82,6 +87,7 @@
       }
 
       public function getSizeAnsweredFromCategory($userid, $categoryid){
+         $categoryid = $this->_sanitizer->sanitize($categoryid);
          $sizeQuestions = $this->_questionmapper->size($categoryid);
          $sizeFinished = $this->_answerdquestionsmapper->size($userid, $categoryid);
          $sizeFinished = ($sizeFinished ? $sizeFinished : "0");

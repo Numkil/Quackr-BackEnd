@@ -14,6 +14,7 @@
    require_once SYSTEM_PATH.'controller/Controller.php';
    require_once APPLICATION_PATH.'controller/UserController.php';
    require_once APPLICATION_PATH.'controller/QuestionController.php';
+   require_once APPLICATION_PATH.'controller/AnsweredQuestionsController.php';
    require_once APPLICATION_PATH.'config.php';
 
    // In case one is using PHP 5.4's built-in server
@@ -68,7 +69,7 @@
 
 
    // Check JWT on /secured routes
-   $router->before('GET', '/secured/.*', function() {
+   $router->before('GET|POST', '/secured/.*', function() {
       global $ID;
       global $UserController;
 
@@ -137,7 +138,7 @@
 
    //RETURNS several random questions as specified in url, less if there aren't enough unanswered
    //questions by the user
-   $router->get('/secured/category/(\d+)/random/(\d+)/', function($categoryid, $amount){
+   $router->get('/secured/category/(\d+)/random/(\d+)', function($categoryid, $amount){
       $questioncontroller = new QuestionController();
       global $UserController;
       $questioncontroller->getMultipleRandoms($categoryid, $UserController->getId(), $amount);
@@ -163,10 +164,18 @@
    });
 
    //RETURN sizeansweredquestions / sizeamountquestionsfromcategory
-   $router->get('/secured/user/(\d+)/progress/', function($categoryid){
+   $router->get('/secured/user/(\d+)/progress', function($categoryid){
       $questioncontroller = new QuestionController();
       global $UserController;
       $questioncontroller->getSizeAnsweredFromCategory($UserController->getId(), $categoryid);
+   });
+
+   //REGISTERS answeredquestions for a user
+   $router->post('/user/submit', function(){
+      $answeredquestioncontroller = new AnsweredQuestionsController();
+      global $UserController;
+      $answeredquestioncontroller->registerAnswers($UserController->getId());
+      echo "Answers registered";
    });
 
    //None of the above categories matched

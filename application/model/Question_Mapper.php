@@ -3,11 +3,11 @@
    Uses DB.php->execute method for server contact
 
    questions table layout for future reference
-   +------------------------------+
-   | id |    question    | reward |
-   +-------------------------- ---+
-   |  1 | how cool am I? |    4   |
-   +----------------------------- +
+   +---------------------------------------------+
+   | id |    question    |   lvl  | categoryid   |
+   +-------------------------- ------------------+
+   |  1 | how cool am I? |    4   |    2         |
+   +-------------------------------------------- +
 
    */
 
