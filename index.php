@@ -171,7 +171,7 @@
    });
 
    //REGISTERS answeredquestions for a user
-   $router->post('/user/submit', function(){
+   $router->post('/secured/user/submit', function(){
       $answeredquestioncontroller = new AnsweredQuestionsController();
       global $UserController;
       $answeredquestioncontroller->registerAnswers($UserController->getId());
