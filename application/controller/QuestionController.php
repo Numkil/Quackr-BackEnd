@@ -35,27 +35,6 @@
          echo(json_encode($container));
       }
 
-      public function getQuestionsFromCategory($categoryid){
-         $categoryid = $this->_sanitizer->sanitize($categoryid);
-         $category = $this->_categorymapper->get($categoryid, 'id');
-         $questions = $this->_questionmapper->getAllFromCategory($categoryid);
-         $i = 0;
-         $container = array();
-         foreach ($questions as $question){
-            $container[$i] = $question->jsonSerialize();
-            $i++;
-         }
-         $category->questioncontainer = $container;
-         echo(json_encode($category->jsonSerialize()));
-      }
-
-      public function getQuestion($questionid){
-         $questionid = $this->_sanitizer->sanitize($questionid);
-         $question = $this->_questionmapper->get($questionid);
-         echo(json_encode($question->jsonSerialize()));
-      }
-
-
       public function getRandom($categoryid, $userid){
          $categoryid = $this->_sanitizer->sanitize($categoryid);
          $category = $this->_categorymapper->get($categoryid, 'id');

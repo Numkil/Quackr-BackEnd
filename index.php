@@ -123,12 +123,6 @@
       $questioncontroller->getAllCategories();
    });
 
-   //RETURNS Questions from category
-   $router->get('/secured/category/(\d+)', function($categoryid){
-      $questioncontroller = new QuestionController();
-      $questioncontroller->getQuestionsFromCategory($categoryid);
-   });
-
    //RETURNS random question which has not been answered by the user
    $router->get('/secured/category/(\d+)/random', function($categoryid){
       $questioncontroller = new QuestionController();
@@ -142,12 +136,6 @@
       $questioncontroller = new QuestionController();
       global $UserController;
       $questioncontroller->getMultipleRandoms($categoryid, $UserController->getId(), $amount);
-   });
-
-   //RETURNS 1 specific question
-   $router->get('/secured/question/(\d+)', function($questionid){
-      $questioncontroller = new QuestionController();
-      $questioncontroller->getQuestion($questionid);
    });
 
    //RETURN information about the current user

@@ -36,87 +36,77 @@
          }
       }
 
-      private function getRandom($id, $categoryid){
+      public function getRandomQuestion($id, $categoryid){
+         //get the corresponding Question from DB
+         $question = $this->getRandoms($id, $categoryid, 1);
+         //get the corresponding answers
+         if($question == null){
+            return $question;
+         }
+         $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
+         $question->setPossibilities($answers);
+         return $question;
+      }
+
+
+      public function getRandomQuestions($id, $categoryid, $amount){
+         $questions = $this->getRandoms($id, $categoryid, $amount);
+         if($questions == null){
+            return array();
+         }
+         foreach ($questions as $question){
+            $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
+            $question->setPossibilities($answers);
+         }
+         return $questions;
+      }
+
+      public function add($object){
+         $id = parent::add($object);
+         if($id){
+            $object->setId($id);
+         }
+         foreach($object->getPossibilities() as $value){
+            $this->_answermapper->add($value);
+         }
+      }
+
+      public function get($id, $idname = 'id'){
+         $question = parent::get($id, $idname);
+         $answers = $this->_answermapper->getAllWithArgument($id, 'questionlink');
+         $question->setPossibilities($answers);
+         return $question;
+      }
+
+      public function updateQuestion($object){
+         parent::update($object);
+         $fields['questionlink'] = $object->getId();
+         $this->_answermapper->delete($fields);
+         foreach($object->getPossibilities() as $value){
+            $this->_answermapper->add($value);
+         }
+      }
+
+      public function getAllFromCategory($argument) {
+         $questions = parent::getAllWithArgument($argument, 'categoryid');
+         foreach ($questions as $question){
+            $answers = $this->_answermapper->getAllWithArgument($question->getID(), 'questionlink');
+            $question->setPossibilities($answers);
+         }
+         return $questions;
+      }
+
+
+      private function getRandoms($id, $categoryid, $amount){
          $query = "
          select questions.* from questions inner join categories on categories.id = categoryid
          where questions.id not in(
             SELECT questions.id
             from answeredquestions inner join questions on id = questionlink where userlink = ?)
             AND categories.id = ?
-            order by rand() limit 1
-            ";
-            return $this->_db->queryOne($query, $this->_type, array($id, $categoryid));
-         }
-
-         public function getRandomQuestion($id, $categoryid){
-            //get the corresponding Question from DB
-            $question = $this->getRandom($id, $categoryid);
-            //get the corresponding answers
-            if($question == null){
-               return $question;
-            }
-            $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
-            $question->setPossibilities($answers);
-            return $question;
-         }
-
-         private function getRandoms($id, $categoryid, $amount){
-            $query = "
-            select questions.* from questions inner join categories on categories.id = categoryid
-            where questions.id not in(
-            SELECT questions.id
-            from answeredquestions inner join questions on id = questionlink where userlink = ?)
-            AND categories.id = ?
             order by rand() limit $amount
-               ";
-               return $this->_db->queryAll($query, $this->_type, array($id,$categoryid));
-            }
-
-            public function getRandomQuestions($id, $categoryid, $amount){
-               $questions = $this->getRandoms($id, $categoryid, $amount);
-               if($questions == null){
-                  return array();
-               }
-               foreach ($questions as $question){
-                  $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
-                  $question->setPossibilities($answers);
-               }
-               return $questions;
-            }
-
-            public function add($object){
-               $id = parent::add($object);
-               if($id){
-                  $object->setId($id);
-               }
-               foreach($object->getPossibilities() as $value){
-                  $this->_answermapper->add($value);
-               }
-            }
-
-            public function get($id, $idname = 'id'){
-               $question = parent::get($id, $idname);
-               $answers = $this->_answermapper->getAllWithArgument($id, 'questionlink');
-               $question->setPossibilities($answers);
-               return $question;
-            }
-
-            public function updateQuestion($object){
-               parent::update($object);
-               $fields['questionlink'] = $object->getId();
-               $this->_answermapper->delete($fields);
-               foreach($object->getPossibilities() as $value){
-                  $this->_answermapper->add($value);
-               }
-            }
-
-            public function getAllFromCategory($argument) {
-               $questions = parent::getAllWithArgument($argument, 'categoryid');
-               foreach ($questions as $question){
-                  $answers = $this->_answermapper->getAllWithArgument($question->getID(), 'questionlink');
-                  $question->setPossibilities($answers);
-               }
-               return $questions;
-            }
+            ";
+         return $this->_db->queryAll($query, $this->_type, array($id,$categoryid));
          }
-      ?>
+      }
+   ?>
