@@ -24,6 +24,23 @@
          $this->_answerdquestionsmapper = new AnsweredQuestions_Mapper();
       }
 
+      private function _sortArrayOfQuestions($questions){
+         var_dump($questions);
+         $container = array();
+         foreach ($questions as $question){
+            var_dump($question);
+            $level = array();
+            foreach ($questions as $innerquestion){
+               if($question->getLvl() == $innerquestion->getLvl()){
+                  array_push($level, $innerquestion);
+               }
+            }
+            var_dump($level);
+            array_merge($container, $level);
+         }
+         return $container;
+      }
+
       public function getAllCategories(){
          $categories = $this->_categorymapper->getAll();
          $i = 0;
@@ -48,12 +65,7 @@
          $amount = $this->_sanitizer->sanitize($amount);
          $category = $this->_categorymapper->get($categoryid, 'id');
          $questions = $this->_questionmapper->getRandomQuestions($userid, $categoryid, $amount);
-         $i = 0;
-         $container = array();
-         foreach ($questions as $question){
-            $container[$i] = $question->jsonSerialize();
-            $i++;
-         }
+         $container = $this->_sortArrayOfQuestions($questions);
          $category->questioncontainer = $container;
          echo(json_encode($category->jsonSerialize()));
       }
