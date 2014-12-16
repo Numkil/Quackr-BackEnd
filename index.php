@@ -166,6 +166,14 @@
       echo "Answers registered";
    });
 
+   //REMOVES a user from the answeredquestions table
+   $router->post('/secured/user/reset', function(){
+      $answeredquestioncontroller = new AnsweredQuestionsController();
+      global $UserController;
+      $answeredquestioncontroller->resetProgress($UserController->getId());
+      echo "progress reset";
+   });
+
    //None of the above categories matched
    $router->set404(function() {
       header('HTTP/1.1 404 Not Found');

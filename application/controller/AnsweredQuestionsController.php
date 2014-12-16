@@ -36,5 +36,9 @@
          }
       }
 
+      public function resetProgress($userid){
+         $this->_answerdquestionsmapper->delete($userid, 'userlink');
+      }
+
    }
 ?>
