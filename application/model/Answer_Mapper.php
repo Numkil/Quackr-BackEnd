@@ -8,15 +8,15 @@
    +-----------------------------------------+
    |       1      |    Super cool  |    t    |
    +-----------------------------------------+
-   */
+    */
 
-   require_once APPLICATION_PATH.'model/Answer.php';
+require_once APPLICATION_PATH.'model/Answer.php';
 
-   class Answer_Mapper extends Mapper{
+class Answer_Mapper extends Mapper{
 
-      public function __construct(){
-         parent::__construct('answers', 'Answer');
-      }
-   }
+    public function __construct(){
+        parent::__construct('answers', 'Answer');
+    }
+}
 
 ?>

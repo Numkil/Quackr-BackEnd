@@ -37,7 +37,7 @@
       }
 
       public function resetProgress($userid){
-         $this->_answerdquestionsmapper->delete($userid, 'userlink');
+         $this->_answerdquestionsmapper->delete(array('userlink'=>$userid));
       }
 
    }

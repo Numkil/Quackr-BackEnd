@@ -9,104 +9,104 @@
    |  1 | how cool am I? |    4   |    2         |
    +-------------------------------------------- +
 
-   */
+    */
 
-   require_once APPLICATION_PATH.'model/Answer_Mapper.php';
-   require_once APPLICATION_PATH.'model/Answer.php';
-   require_once APPLICATION_PATH.'model/Question.php';
+require_once APPLICATION_PATH.'model/Answer_Mapper.php';
+require_once APPLICATION_PATH.'model/Answer.php';
+require_once APPLICATION_PATH.'model/Question.php';
 
-   class Question_Mapper extends Mapper{
-      private $_answermapper;
+class Question_Mapper extends Mapper{
+    private $_answermapper;
 
-      public function __construct() {
-         parent::__construct('questions', 'Question');
-         $this->_answermapper = new Answer_Mapper();
-      }
+    public function __construct() {
+        parent::__construct('questions', 'Question');
+        $this->_answermapper = new Answer_Mapper();
+    }
 
-      public function size($categoryid = null){
-         if($categoryid){
+    public function size($categoryid = null){
+        if($categoryid){
             $query = "
-            SELECT count(*)
-            FROM $this->_table
-            where categoryid = ?
-            ";
+                SELECT count(*)
+                FROM $this->_table
+                where categoryid = ?
+                ";
             return $this->_db->primitiveQuery($query, $categoryid);
-         }else{
+        }else{
             return parent::size();
-         }
-      }
+        }
+    }
 
-      public function getRandomQuestion($id, $categoryid){
-         //get the corresponding Question from DB
-         $question = $this->getRandoms($id, $categoryid, 1);
-         //get the corresponding answers
-         if($question == null){
+    public function getRandomQuestion($id, $categoryid){
+        //get the corresponding Question from DB
+        $question = $this->getRandoms($id, $categoryid, 1);
+        //get the corresponding answers
+        if($question == null){
             return $question;
-         }
-         $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
-         $question->setPossibilities($answers);
-         return $question;
-      }
+        }
+        $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
+        $question->setPossibilities($answers);
+        return $question;
+    }
 
 
-      public function getRandomQuestions($id, $categoryid, $amount){
-         $questions = $this->getRandoms($id, $categoryid, $amount);
-         if($questions == null){
+    public function getRandomQuestions($id, $categoryid, $amount){
+        $questions = $this->getRandoms($id, $categoryid, $amount);
+        if($questions == null){
             return array();
-         }
-         foreach ($questions as $question){
+        }
+        foreach ($questions as $question){
             $answers = $this->_answermapper->getAllWithArgument($question->getId(), 'questionlink');
             $question->setPossibilities($answers);
-         }
-         return $questions;
-      }
+        }
+        return $questions;
+    }
 
-      public function add($object){
-         $id = parent::add($object);
-         if($id){
+    public function add($object){
+        $id = parent::add($object);
+        if($id){
             $object->setId($id);
-         }
-         foreach($object->getPossibilities() as $value){
+        }
+        foreach($object->getPossibilities() as $value){
             $this->_answermapper->add($value);
-         }
-      }
+        }
+    }
 
-      public function get($id, $idname = 'id'){
-         $question = parent::get($id, $idname);
-         $answers = $this->_answermapper->getAllWithArgument($id, 'questionlink');
-         $question->setPossibilities($answers);
-         return $question;
-      }
+    public function get($id, $idname = 'id'){
+        $question = parent::get($id, $idname);
+        $answers = $this->_answermapper->getAllWithArgument($id, 'questionlink');
+        $question->setPossibilities($answers);
+        return $question;
+    }
 
-      public function updateQuestion($object){
-         parent::update($object);
-         $fields['questionlink'] = $object->getId();
-         $this->_answermapper->delete($fields);
-         foreach($object->getPossibilities() as $value){
+    public function updateQuestion($object){
+        parent::update($object);
+        $fields['questionlink'] = $object->getId();
+        $this->_answermapper->delete($fields);
+        foreach($object->getPossibilities() as $value){
             $this->_answermapper->add($value);
-         }
-      }
+        }
+    }
 
-      public function getAllFromCategory($argument) {
-         $questions = parent::getAllWithArgument($argument, 'categoryid');
-         foreach ($questions as $question){
+    public function getAllFromCategory($argument) {
+        $questions = parent::getAllWithArgument($argument, 'categoryid');
+        foreach ($questions as $question){
             $answers = $this->_answermapper->getAllWithArgument($question->getID(), 'questionlink');
             $question->setPossibilities($answers);
-         }
-         return $questions;
-      }
+        }
+        return $questions;
+    }
 
 
-      private function getRandoms($id, $categoryid, $amount){
-         $query = "
-         select questions.* from questions inner join categories on categories.id = categoryid
-         where questions.id not in(
-            SELECT questions.id
-            from answeredquestions inner join questions on id = questionlink where userlink = ?)
-            AND categories.id = ?
-            order by rand() limit $amount
-            ";
-         return $this->_db->queryAll($query, $this->_type, array($id,$categoryid));
-         }
-      }
-   ?>
+    private function getRandoms($id, $categoryid, $amount){
+        $query = "
+            select questions.* from questions inner join categories on categories.id = categoryid
+            where questions.id not in(
+                SELECT questions.id
+                from answeredquestions inner join questions on id = questionlink where userlink = ?)
+                AND categories.id = ?
+                order by rand() limit $amount
+                ";
+        return $this->_db->queryAll($query, $this->_type, array($id,$categoryid));
+    }
+}
+?>

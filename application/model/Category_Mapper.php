@@ -7,16 +7,16 @@
    |        id    |    categoryname    |
    +-----------------------------------+
    |       1      |     trivia         |
-   +-----------------------------------+ 
-   */
+   +-----------------------------------+
+    */
 
-   require_once APPLICATION_PATH. 'model/Category.php';
+require_once APPLICATION_PATH. 'model/Category.php';
 
-   class Category_Mapper extends Mapper{
+class Category_Mapper extends Mapper{
 
-      public function __construct(){
-         parent::__construct('categories', 'Category');
-      }
-   }
+    public function __construct(){
+        parent::__construct('categories', 'Category');
+    }
+}
 
 ?>

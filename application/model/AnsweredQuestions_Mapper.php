@@ -7,33 +7,33 @@
    +-------------------------------------------------+
    |       1      |  google|25452  |         t       |
    +-------------------------------------------------+
-   */
+    */
 
-   require_once APPLICATION_PATH.'model/AnsweredQuestions.php';
+require_once APPLICATION_PATH.'model/AnsweredQuestions.php';
 
-   class AnsweredQuestions_Mapper extends Mapper{
+class AnsweredQuestions_Mapper extends Mapper{
 
-      public function __construct(){
-         parent::__construct('answeredquestions', 'AnsweredQuestions');
-      }
+    public function __construct(){
+        parent::__construct('answeredquestions', 'AnsweredQuestions');
+    }
 
-      public function size($userid, $categoryid=null){
-         if($categoryid){
+    public function size($userid, $categoryid=null){
+        if($categoryid){
             $query= "
-            SELECT count(*)
-            FROM $this->_table inner join questions on questions.id = questionlink
-            where userlink = :userlink and categoryid = :categoryid
-            ";
+                SELECT count(*)
+                FROM $this->_table inner join questions on questions.id = questionlink
+                where userlink = :userlink and categoryid = :categoryid
+                ";
             return $this->_db->primitiveQuery($query, array('userlink'=>$userid,'categoryid'=> $categoryid));
-         }else{
+        }else{
             $query = "
-            SELECT count(*)
-            FROM $this->_table
-            where userlink = ?
-            ";
+                SELECT count(*)
+                FROM $this->_table
+                where userlink = ?
+                ";
             return $this->_db->primitiveQuery($query, $userid);
-         }
-      }
-   }
+        }
+    }
+}
 
 ?>
