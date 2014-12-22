@@ -25,17 +25,14 @@
       }
 
       private function _sortArrayOfQuestions($questions){
-         var_dump($questions);
          $container = array();
          foreach ($questions as $question){
-            var_dump($question);
             $level = array();
             foreach ($questions as $innerquestion){
                if($question->getLvl() == $innerquestion->getLvl()){
                   array_push($level, $innerquestion);
                }
             }
-            var_dump($level);
             array_merge($container, $level);
          }
          return $container;
