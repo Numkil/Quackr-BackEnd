@@ -30,10 +30,10 @@
             $level = array();
             foreach ($questions as $innerquestion){
                if($question->getLvl() == $innerquestion->getLvl()){
-                  array_push($level, $innerquestion);
+                  array_push($level, $innerquestion->jsonSerialize());
                }
             }
-            array_merge($container, $level);
+            array_push($container, $level);
          }
          return $container;
       }
